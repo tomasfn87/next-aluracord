@@ -38,7 +38,7 @@ function Title(props) {
       <style jsx>{`
         ${Tag} {
           color: ${appConfig.theme.colors.primary[200]};
-           font-size: 26px;
+            font-size: 26px;
           font-weight: 600;
         }
       `}</style>
@@ -120,14 +120,14 @@ export default function PaginaInicial() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              maxWidth: '200px',
+              maxWidth: '220px',
               padding: '16px',
-              backgroundColor: appConfig.theme.colors.neutrals[800],
-              border: '.5px solid',
+              backgroundColor: appConfig.theme.colors.neutrals[999],
+              border: '0px solid',
               borderColor: appConfig.theme.colors.neutrals[999],
               borderRadius: '5px',
               flex: 1,
-              minHeight: '240px',
+              minHeight: '270px',
             }}
           >
             <Image
@@ -135,12 +135,12 @@ export default function PaginaInicial() {
                 borderRadius: '2%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
+              src={`https://github.com/${username}.png`} alt="foto do perfil do GitHub"
             />
             <Text
               variant="body4"
               styleSheet={{
-                color: appConfig.theme.colors.neutrals[200],
+                color: appConfig.theme.colors.neutrals[100],
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 padding: '3px 10px',
                 borderRadius: '3px'

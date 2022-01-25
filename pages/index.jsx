@@ -11,7 +11,7 @@ function GlobalStyle() {
         list-style: none;
       }
       body {
-        font-family: 'Open Sans', sans-serif;
+        font-family: 'Roboto', 'Open-Sans', sans-serif;
       }
       /* App fit Height */ 
       html, body, #__next {
@@ -30,34 +30,21 @@ function GlobalStyle() {
   );
 }
 
-function Titulo(props) {
+function Title(props) {
   const Tag = props.tag || 'h1';
   return (
     <div>
       <Tag>{props.children}</Tag>
       <style jsx>{`
-            ${Tag} {
-                color: ${appConfig.theme.colors.primary['100']};
-                font-size: 24px;
-                font-weight: 600;
-            }
-            `}</style>
+        ${Tag} {
+          color: ${appConfig.theme.colors.primary[200]};
+           font-size: 26px;
+          font-weight: 600;
+        }
+      `}</style>
     </div>
   );
 }
-
-// Componente React
-// function HomePage() {
-//     // JSX
-//     return (
-//         <div>
-//             <GlobalStyle />
-//             <Titulo tag="h2">Boas vindas de volta!</Titulo>
-//             <h2>Discord - Alura Matrix</h2>
-//         </div>
-//     )
-// }
-// export default HomePage
 
 export default function PaginaInicial() {
   const username = 'tomasfn87';
@@ -96,7 +83,7 @@ export default function PaginaInicial() {
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
             }}
           >
-            <Titulo tag="h2">Boas vindas de volta!</Titulo>
+            <Title tag="h2">Boas vindas de volta!</Title>
             <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
               {appConfig.name}
             </Text>
@@ -118,9 +105,9 @@ export default function PaginaInicial() {
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
-                mainColor: appConfig.theme.colors.primary[700],
-                mainColorLight: appConfig.theme.colors.primary[600],
-                mainColorStrong: appConfig.theme.colors.primary[800],
+                mainColor: appConfig.theme.colors.primary[800],
+                mainColorLight: appConfig.theme.colors.primary[700],
+                mainColorStrong: appConfig.theme.colors.primary[700],
               }}
             />
           </Box>

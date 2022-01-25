@@ -1,7 +1,8 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
 import appConfig from '../config.json';
 
-function GlobalStyle() {
+const GlobalStyle = () => {
   return (
     <style global jsx>{`
       * {
@@ -30,7 +31,7 @@ function GlobalStyle() {
   );
 }
 
-function Title(props) {
+const Title = (props) => {
   const Tag = props.tag || 'h1';
   return (
     <div>
@@ -46,8 +47,29 @@ function Title(props) {
   );
 }
 
+
 export default function PaginaInicial() {
-  const username = 'tomasfn87';
+  // const username = 'tomasfn87';
+  const [username, setUsername] = React.useState("tomasfn87")
+  const Link = `https://www.github.com/${username}`
+
+  const Username = (username) => {
+    let fUsername = ""
+
+    if (username !== "") {
+      fUsername += username[0].toUpperCase();
+
+      for (let i=1; i < username.length; i++) {
+        fUsername += username[i];
+      }
+    }
+
+    return (
+      <div>
+        <a href={Link} target="_blank" rel="noreferrer">{fUsername}</a>
+      </div>
+    );
+  }  
 
   return (
     <>
@@ -84,11 +106,19 @@ export default function PaginaInicial() {
             }}
           >
             <Title tag="h2">Boas vindas de volta!</Title>
+
             <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
-              {appConfig.name}
+              <a href="https://github.com/tomasfn87/next-aluracord" target="_blank" rel="noreferrer">
+                {appConfig.name}
+              </a>
             </Text>
 
             <TextField
+            value={username}
+              onChange={function (event) {
+                const value = event.target.value;
+                setUsername(value);
+              }}
               fullWidth
               textFieldColors={{
                 neutral: {
@@ -99,6 +129,15 @@ export default function PaginaInicial() {
                 },
               }}
             />
+            {/*<input
+              type="text"
+              value={username}
+              onChange={function (event) {
+                const value = event.target.value;
+                setUsername(value);
+              }}
+            />*/}
+
             <Button
               type='submit'
               label='Entrar'
@@ -130,13 +169,13 @@ export default function PaginaInicial() {
               minHeight: '270px',
             }}
           >
-            <Image
+            <a href={Link}><Image
               styleSheet={{
                 borderRadius: '2%',
                 marginBottom: '16px',
               }}
               src={`https://github.com/${username}.png`} alt="foto do perfil do GitHub"
-            />
+            /></a>
             <Text
               variant="body4"
               styleSheet={{
@@ -146,7 +185,7 @@ export default function PaginaInicial() {
                 borderRadius: '3px'
               }}
             >
-              {username}
+              {Username(username)}
             </Text>
           </Box>
           {/* Photo Area */}

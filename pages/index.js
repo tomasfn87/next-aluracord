@@ -1,35 +1,7 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
-
-const GlobalStyle = () => {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: 'Roboto', 'Open-Sans', sans-serif;
-      }
-      /* App fit Height */ 
-      html, body, #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */ 
-    `}</style>
-  );
-}
+import { useRouter } from 'next/router';
 
 const Title = (props) => {
   const Tag = props.tag || 'h1';
@@ -39,7 +11,7 @@ const Title = (props) => {
       <style jsx>{`
         ${Tag} {
           color: ${appConfig.theme.colors.primary[200]};
-            font-size: 26px;
+          font-size: 26px;
           font-weight: 600;
         }
       `}</style>
@@ -47,11 +19,10 @@ const Title = (props) => {
   );
 }
 
-
-export default function PaginaInicial() {
-  // const username = 'tomasfn87';
+export default function HomePage() {
   const [username, setUsername] = React.useState("tomasfn87")
   const Link = `https://www.github.com/${username}`
+  const AppRouter = useRouter();
 
   const Username = (username) => {
     let fUsername = ""
@@ -65,15 +36,12 @@ export default function PaginaInicial() {
     }
 
     return (
-      <div>
-        <a href={Link} target="_blank" rel="noreferrer">{fUsername}</a>
-      </div>
+      <a href={Link} target="_blank" rel="noreferrer">{fUsername}</a>
     );
   }  
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -100,6 +68,12 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function(formData) {
+              formData.preventDefault();
+              console.log(formData.target[0].attributes.value.nodeValue);
+              AppRouter.push("/chat");
+              
+            }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -114,7 +88,7 @@ export default function PaginaInicial() {
             </Text>
 
             <TextField
-            value={username}
+              value={username}
               onChange={function (event) {
                 const value = event.target.value;
                 setUsername(value);
@@ -169,13 +143,15 @@ export default function PaginaInicial() {
               minHeight: '270px',
             }}
           >
-            <a href={Link}><Image
-              styleSheet={{
-                borderRadius: '2%',
-                marginBottom: '16px',
-              }}
-              src={`https://github.com/${username}.png`} alt="foto do perfil do GitHub"
-            /></a>
+            <a href={Link}>
+              <Image
+                styleSheet={{
+                  borderRadius: '2%',
+                  marginBottom: '16px',
+                }}
+                src={`https://github.com/${username}.png`} alt="foto do perfil do GitHub"
+              />
+            </a>
             <Text
               variant="body4"
               styleSheet={{

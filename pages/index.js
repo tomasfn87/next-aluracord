@@ -33,7 +33,7 @@ export default function HomePage() {
     .then(response => response.json())
     .then(data => setTimeout(setRepos(data), 5000))
   }, [username])
-  
+
   const Username = (username) => {
     let fUsername = ""
     if (username !== "") {

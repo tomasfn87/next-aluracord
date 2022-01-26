@@ -1,5 +1,5 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import appConfig from '../config.json';
 import { useRouter } from 'next/router';
 
@@ -19,27 +19,79 @@ const Title = (props) => {
   );
 }
 
-export default function HomePage() {
-  const [username, setUsername] = React.useState("tomasfn87")
-  const Link = `https://www.github.com/${username}`
-  const AppRouter = useRouter();
 
+export default function HomePage() {
+  const AppRouter = useRouter();
+  const [username, setUsername] = useState("tomasfn87");
+  const Link = `https://www.github.com/${username}`;
+  const GithubReposLink = `https://github.com/${username}?tab=repositories`;
+
+  let [repos, setRepos] = useState(null);
+  
+  useEffect(() => {
+    fetch(`https://api.github.com/users/${username}/repos`)
+    .then(response => response.json())
+    .then(data => setTimeout(setRepos(data), 5000))
+  }, [username])
+  
   const Username = (username) => {
     let fUsername = ""
-
     if (username !== "") {
       fUsername += username[0].toUpperCase();
-
       for (let i=1; i < username.length; i++) {
         fUsername += username[i];
       }
     }
-
     return (
       <a href={Link} target="_blank" rel="noreferrer">{fUsername}</a>
     );
-  }  
+  }
 
+  function Repositories(repos) {
+    return (
+      <div id="repos">
+        <ul>
+          <a href={GithubReposLink} target="_blank" rel="noreferrer">
+            <h3>Repos GitHub</h3><br />
+          </a>
+          {repos.map(r => {
+            return (
+              <li key={r.id}>
+                <a href={r.html_url} target="_blank" rel="noreferrer">
+                  {r.name}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+        <style jsx>{`
+          #repos {
+            color: ${appConfig.theme.colors.primary[800]};
+            display: inline-flex;
+            position: absolute;
+            left: 0;
+            padding-left: .75em;
+          }
+          h3 {
+            color: ${appConfig.theme.colors.primary[700]};
+          }
+          h3:hover {
+            color: ${appConfig.theme.colors.primary["050"]};
+            font-size: 1.3em;
+          }
+          li {
+            text-align: left;
+          }
+          li:hover{
+            color: ${appConfig.theme.colors.primary[100]};
+            font-size: 1.2em;
+          }
+        `}
+        </style>
+      </div>
+    );
+  }
+  
   return (
     <>
       <Box
@@ -47,9 +99,10 @@ export default function HomePage() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           backgroundColor: appConfig.theme.colors.primary[700],
           backgroundImage: 'url(https://images.pexels.com/photos/932638/pexels-photo-932638.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260)',
-          backgroundRepeat: 'no-repeat', backgroundSize: '100vw', backgroundBlendMode: 'luminosity',
+          backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'luminosity',
         }}
       >
+        {Array.isArray(repos) && Repositories(repos)}
         <Box
           styleSheet={{
             display: 'flex',
@@ -65,6 +118,7 @@ export default function HomePage() {
             backgroundColor: appConfig.theme.colors.neutrals[700],
           }}
         >
+
           {/* Formulário */}
           <Box
             as="form"
@@ -91,7 +145,7 @@ export default function HomePage() {
               value={username}
               onChange={function (event) {
                 const value = event.target.value;
-                setUsername(value);
+                setTimeout(setUsername(value), 5000)
               }}
               fullWidth
               textFieldColors={{
@@ -103,6 +157,7 @@ export default function HomePage() {
                 },
               }}
             />
+
             {/*<input
               type="text"
               value={username}
@@ -165,6 +220,7 @@ export default function HomePage() {
             </Text>
           </Box>
           {/* Photo Area */}
+
         </Box>
       </Box>
     </>

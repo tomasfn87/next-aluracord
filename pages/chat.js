@@ -16,12 +16,28 @@ export default function ChatPage() {
   
   const handleNewMessage = (newMessage) => {
     const mensagem = {
-      texto: newMessage,
+      texto: newMessage.trim(),
       de: username,
       id: `${date.date} ${date.time}.${date.ms}`
     }
-    setChatMessages([ mensagem, ...chatMessages ]);
-    setMensagem('');
+    !isStringEmpty(newMessage) 
+    || setChatMessages([ mensagem, ...chatMessages ])
+    || setMensagem('');
+  }
+
+  const isStringEmpty = (text) => {
+    let result = false; 
+    if (text.length === 0) {
+      return result; 
+    }
+    else {
+      for (let i of text) {
+        if (i !== " ") {
+          return true;
+        }
+      }
+      return result;
+    }
   }
 
   return (
@@ -122,6 +138,7 @@ function MessageList(props) {
   
   return (
     <Box
+      id="message-list"
       tag="ul"
       styleSheet={{
         overflow: 'scroll',

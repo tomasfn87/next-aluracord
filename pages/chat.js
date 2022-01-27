@@ -6,37 +6,37 @@ export default function ChatPage() {
   const username = "tomasfn87";
   const [mensagem, setMensagem] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
-  const novaData = new Date();
   
-  const date = {
-    date: novaData.toLocaleDateString().padStart(10, 0),
-    time: novaData.toLocaleTimeString().padStart(8, 0),
-    ms: novaData.getMilliseconds().toString()
+  const newDate = new Date();
+  const d = {
+    date: { ptBR: newDate.toLocaleDateString('pt-BR').padStart(10, 0) },
+    time: { ptBR: newDate.toLocaleTimeString('pt-BR').padStart(8, 0) },
+    ms: newDate.getMilliseconds().toString()
   }
+  d.year = d.date.ptBR.slice(-4);
+  d.month = d.date.ptBR.slice(3, 5);
+  d.day = d.date.ptBR.slice(0, 2);
   
   const handleNewMessage = (newMessage) => {
     const mensagem = {
       texto: newMessage.trim(),
       de: username,
-      id: `${date.date} ${date.time}.${date.ms}`
+      id: `${d.year}/${d.month}/${d.day} ${d.time.ptBR}.${d.ms}`
     }
-    !isStringEmpty(newMessage) 
-    || setChatMessages([ mensagem, ...chatMessages ])
-    || setMensagem('');
+    !isStringEmpty(newMessage)
+    || setChatMessages([ mensagem, ...chatMessages ]);
+    setMensagem('');
   }
 
   const isStringEmpty = (text) => {
-    let result = false; 
-    if (text.length === 0) {
-      return result; 
-    }
+    if (text.length === 0) return false; 
     else {
       for (let i of text) {
         if (i !== " ") {
           return true;
         }
       }
-      return result;
+      return false;
     }
   }
 
@@ -141,7 +141,7 @@ function MessageList(props) {
       id="message-list"
       tag="ul"
       styleSheet={{
-        overflow: 'scroll',
+        overflow: 'auto',
         display: 'flex',
         flexDirection: 'column-reverse',
         flex: 1,
@@ -189,7 +189,6 @@ function MessageList(props) {
                 }}
                 tag="span"
               >
-              
                 {mensagem.id.slice(0, 19)}
               </Text>
             </Box>

@@ -4,6 +4,7 @@ function sortObjectArrByProp(objArr, objProp, reverse = 's') {
   let indices = [];
   objArr.forEach((obj, index) => {
     typeof obj[objProp] !== 'string'
+      || typeof obj[objProp] !== 'number'
       ? values.push(obj[objProp].toString())
       : values.push(obj[objProp]);
     indices.push(index);

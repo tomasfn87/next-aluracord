@@ -2,7 +2,7 @@ import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React, { useState, useEffect } from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
-import sortObjectArrByProp from '../sortObjectArrByProp';
+import sortObjectArrByProp from '../utils/sortObjectArrByProp';
 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMwNzI2NiwiZXhwIjoxOTU4ODgzMjY2fQ.7mazx4nZWITbk95jtcFiSAkGPdQUF9Xn_Tbyza71bvI";
 const SUPABASE_URL = "https://kymrratefurtiggevjps.supabase.co";

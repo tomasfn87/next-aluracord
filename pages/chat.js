@@ -1,30 +1,51 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js';
+import sortObjectArrByProp from '../sortObjectArrByProp';
+
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMwNzI2NiwiZXhwIjoxOTU4ODgzMjY2fQ.7mazx4nZWITbk95jtcFiSAkGPdQUF9Xn_Tbyza71bvI";
+const SUPABASE_URL = "https://kymrratefurtiggevjps.supabase.co";
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function ChatPage() {
   const username = "tomasfn87";
   const [mensagem, setMensagem] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
-  
+
   const newDate = new Date();
-  const d = {
+  const now = {
     date: { ptBR: newDate.toLocaleDateString('pt-BR').padStart(10, 0) },
     time: { ptBR: newDate.toLocaleTimeString('pt-BR').padStart(8, 0) },
     ms: newDate.getMilliseconds().toString()
   }
-  d.year = d.date.ptBR.slice(-4);
-  d.month = d.date.ptBR.slice(3, 5);
-  d.day = d.date.ptBR.slice(0, 2);
-  
+  now.year = now.date.ptBR.slice(-4);
+  now.month = now.date.ptBR.slice(3, 5);
+  now.day = now.date.ptBR.slice(0, 2);
+
+  useEffect(() => {
+    supabase
+    .from('messages')
+    .select('*')
+    .then(({ data }) => {
+      setChatMessages(data);
+    });
+  }, [])
+
   const handleNewMessage = (newMessage) => {
     const mensagem = {
       texto: newMessage.trim(),
       de: username,
-      id: `${d.year}/${d.month}/${d.day} ${d.time.ptBR}.${d.ms}`
+      id: `${now.year}/${now.month}/${now.day} ${now.time.ptBR}.${now.ms}`,
     }
-    !isStringEmpty(newMessage)
-    || setChatMessages([ mensagem, ...chatMessages ]);
+
+    supabase
+    .from('messages')
+    .insert([ mensagem ])
+    .then(({data}) => {
+      !isStringEmpty(newMessage)
+      || setChatMessages([ data[0], ...chatMessages ]);
+    });
     setMensagem('');
   }
 
@@ -78,7 +99,7 @@ export default function ChatPage() {
           }}
         >
 
-          <MessageList mensagens={chatMessages} username={username}/>
+          <MessageList mensagens={chatMessages} />
 
           <Box
             as="form"
@@ -135,7 +156,7 @@ function Header() {
 }
 
 function MessageList(props) {
-  
+
   return (
     <Box
       id="message-list"
@@ -150,7 +171,7 @@ function MessageList(props) {
       }}
     >
 
-      {props.mensagens.map((mensagem) => {
+      {sortObjectArrByProp(props.mensagens, "id", "r").map((mensagem) => {
         return (
           <Text
             key={mensagem.id}
@@ -177,7 +198,7 @@ function MessageList(props) {
                   display: 'inline-block',
                   marginRight: '8px',
                 }}
-                src={`https://github.com/${props.username}.png`}
+                src={`https://github.com/${mensagem.de}.png`}
                 alt="GitHub profile picture"
               />
               <Text tag="strong">{mensagem.de}</Text>

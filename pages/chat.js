@@ -17,7 +17,7 @@ export default function ChatPage() {
   const now = {
     date: { ptBR: newDate.toLocaleDateString('pt-BR').padStart(10, 0) },
     time: { ptBR: newDate.toLocaleTimeString('pt-BR').padStart(8, 0) },
-    ms: newDate.getMilliseconds().toString()
+    ms: newDate.getMilliseconds().toString().padStart(3, 0)
   }
   now.year = now.date.ptBR.slice(-4);
   now.month = now.date.ptBR.slice(3, 5);

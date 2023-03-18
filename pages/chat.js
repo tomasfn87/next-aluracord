@@ -2,7 +2,7 @@ import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React, { useState, useEffect } from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
-import sortObjectArrByProp from '../utils/sortObjectArrByProp';
+import { sortObjectArrByProps } from '@nighly/sort-object-array-by-property/dist/sortObjArrByProps.js';
 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMwNzI2NiwiZXhwIjoxOTU4ODgzMjY2fQ.7mazx4nZWITbk95jtcFiSAkGPdQUF9Xn_Tbyza71bvI";
 const SUPABASE_URL = "https://kymrratefurtiggevjps.supabase.co";
@@ -50,7 +50,7 @@ export default function ChatPage() {
   }
 
   const isStringEmpty = (text) => {
-    if (text.length === 0) return false; 
+    if (text.length === 0) return false;
     else {
       for (let i of text) {
         if (i !== " ") {
@@ -171,7 +171,7 @@ function MessageList(props) {
       }}
     >
 
-      {sortObjectArrByProp(props.mensagens, "id", "r").map((mensagem) => {
+      {(props.mensagens.length > 0) && sortObjectArrByProps(props.mensagens, "id", "r").map((mensagem) => {
         return (
           <Text
             key={mensagem.id}
